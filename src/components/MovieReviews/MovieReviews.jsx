@@ -6,14 +6,18 @@ import css from "./MovieReviews.module.css";
 const MovieReviews = () => {
   const { movieId } = useParams();
   const [reviews, setReviews] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const fetchReviews = async () => {
+      setLoading(true);
       try {
         const fetchedReviews = await getMovieReviews(movieId);
         setReviews(fetchedReviews);
       } catch (error) {
         console.error("Error fetching movie reviews:", error);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -22,6 +26,7 @@ const MovieReviews = () => {
 
   return (
     <div>
+      {loading && <b>Loading page...</b>}
       {reviews.length > 0 ? (
         <ul>
           {reviews.map((review, index) => (
@@ -32,7 +37,7 @@ const MovieReviews = () => {
           ))}
         </ul>
       ) : (
-        <p>We do not have any reviews for this movie.</p>
+        <b>We do not have any reviews for this movie.</b>
       )}
     </div>
   );
