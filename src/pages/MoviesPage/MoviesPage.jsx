@@ -9,7 +9,7 @@ const MoviesPage = () => {
   const [searchResults, setSearchResults] = useState([]);
   const [searchError, setSearchError] = useState("");
 
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const urlKeyword = searchParams.get("keyword");
 
   useEffect(() => {
@@ -28,6 +28,7 @@ const MoviesPage = () => {
         setSearchError("");
         setSearchResults(results);
       }
+      setSearchParams({ keyword: query });
     } catch (error) {
       console.error("Error searching movies:", error);
       setSearchError("Error searching movies. Please try again later.");
