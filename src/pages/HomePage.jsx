@@ -1,8 +1,6 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
 import { getTrendingMovies } from "../servise-api.js";
 import MovieList from "../components/MovieList/MovieList.jsx";
-import { getMovieDetails } from "../servise-api.js";
 
 const HomePage = () => {
   const [trendingMovies, setTrendingMovies] = useState([]);
@@ -28,12 +26,12 @@ const HomePage = () => {
 
   const handleMovieClick = async (movieId) => {
     try {
-      const movieDetails = await getMovieDetails(movieId);
-      return <Link to={`/movies/${movieId}`} state={{ movieDetails }} />;
+      window.location.href = `/movies/${movieId}`;
     } catch (error) {
-      console.error("Error fetching movie details:", error);
+      console.error("Error handling movie click:", error);
     }
   };
+
   return (
     <div>
       {loading && <b>Loading page...</b>}
@@ -47,7 +45,7 @@ const HomePage = () => {
         </div>
       )}
       {!loading && !error && trendingMovies.length === 0 && (
-        <p>No trending movies found.</p>
+        <b>No trending movies found.</b>
       )}
     </div>
   );

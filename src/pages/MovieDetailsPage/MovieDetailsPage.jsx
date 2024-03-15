@@ -1,13 +1,16 @@
 import { useParams, Link, Outlet, useLocation } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { getMovieDetails } from "../../servise-api";
 import css from "./MovieDetailsPage.module.css";
 import { Suspense } from "react";
 
 const MovieDetailsPage = () => {
   const { movieId } = useParams();
-  const location = useLocation();
   const [movieDetails, setMovieDetails] = useState(null);
+  const location = useLocation();
+  const linkRef = useRef(
+    location.state?.from ?? location.state?.prevLocation ?? "/"
+  );
 
   useEffect(() => {
     const fetchDetails = async () => {
@@ -22,12 +25,10 @@ const MovieDetailsPage = () => {
     fetchDetails();
   }, [movieId]);
 
-  const backLinkHref = location.state?.from ?? "/";
-
   return (
     <div>
       <button type="button" className={css.backlink}>
-        <Link to={backLinkHref}>Go Back</Link>
+        <Link to={linkRef.current}>Go Back</Link>
       </button>
       {movieDetails ? (
         <div className={css.detailsPage}>
